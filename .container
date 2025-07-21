@@ -1,0 +1,23 @@
+# /etc/systemd/user/traefik.container
+[Unit]
+Description=Traefik Reverse Proxy
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+Image=ghcr.io/11notes/traefik:3.4.4
+ContainerName=traefik
+Port=80:80
+Port=443:443
+Volume=/opt/proxy/traefik.yml:/traefik/etc/traefik.yml:ro
+Volume=traefik-var:/traefik/var
+Volume=traefik-plugins:/plugins-storage
+Environment=TZ=Europe/Stockholm
+Exec=--configFile=/traefik/etc/traefik.yml
+Exec=--global.checkNewVersion=false
+Exec=--global.sendAnonymousUsage=false
+Exec=--ping.terminatingStatusCode=204
+RestartPolicy=always
+
+[Install]
+WantedBy=default.target
