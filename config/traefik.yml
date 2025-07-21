@@ -55,3 +55,32 @@ http:
       loadBalancer:
         servers:
           - url: "http://localhost:8080/api/rawdata"
+
+api:
+  insecure: true
+
+log:
+  level: DEBUG
+  
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+  postgres:
+    address: ":5432"
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      dnsChallenge:
+        provider: "dnsimple"
+        resolvers:
+          - 192.168.1.3:53
+      email: dennistryy3@gmail.com
+      storage: /traefik/var/acme.json
+
+providers:
+  file:
+    directory:
+      /traefik/config

@@ -10,14 +10,18 @@ Image=ghcr.io/11notes/traefik:3.4.4
 ContainerName=traefik
 PublishPort=80:80
 PublishPort=443:443
+PublishPort=8080:8080
 PublishPort=5432:5432
 Volume=%h/containers/traefik/traefik.yml:/traefik/etc/traefik.yml:Z,U
+Volume=%h/containers/traefik/dynamic:/traefik/config:Z,U
+Volume=%h/dnsimple_key:/traefik/etc/dnsimple_key:Z,U
 Volume=traefik.volume:/traefik/var
 Environment=TZ=Europe/Stockholm
-Exec=--configFile=/traefik/etc/traefik.yml
-Exec=--global.checkNewVersion=false
-Exec=--global.sendAnonymousUsage=false
-Exec=--ping.terminatingStatusCode=204
+Environment=DNSIMPLE_OAUTH_TOKEN_FILE=/traefik/etc/dnsimple_key
+Exec=--configFile=/traefik/etc/traefik.yml \
+--global.checkNewVersion=false \
+--global.sendAnonymousUsage=false \
+--ping.terminatingStatusCode=204
 PodmanArgs=--sysctl net.ipv4.ip_unprivileged_port_start=80
 
 [Service]

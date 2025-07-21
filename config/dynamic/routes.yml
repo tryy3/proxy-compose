@@ -1,0 +1,21 @@
+
+
+tcp:
+  services:
+    postgres-backend:
+      loadBalancer:
+        servers:
+          - address: "192.168.1.138:5555"
+
+  routers:
+    postgres:
+      entryPoints:
+        - postgres
+      rule: "HostSNI(`postgres.tryy3.dev`)"
+      service: postgres-backend
+      # tls:
+      #   passthrough: true
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "postgres.tryy3.dev"
