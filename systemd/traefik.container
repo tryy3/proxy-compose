@@ -5,19 +5,23 @@ Wants=network-online.target
 After=network-online.target
 
 [Container]
+Label=app=traefik
 Image=ghcr.io/11notes/traefik:3.4.4
 ContainerName=traefik
-Port=80:80
-Port=443:443
-Volume=/opt/proxy/traefik.yml:/traefik/etc/traefik.yml:ro
-Volume=traefik-var:/traefik/var
-Volume=traefik-plugins:/plugins-storage
+PublishPort=80:80
+PublishPort=443:443
+PublishPort=5432:5432
+Volume=%h/containers/traefik/traefik.yml:/traefik/etc/traefik.yml:Z,U
+Volume=traefik.volume:/traefik/var
 Environment=TZ=Europe/Stockholm
 Exec=--configFile=/traefik/etc/traefik.yml
 Exec=--global.checkNewVersion=false
 Exec=--global.sendAnonymousUsage=false
 Exec=--ping.terminatingStatusCode=204
-RestartPolicy=always
+PodmanArgs=--sysctl net.ipv4.ip_unprivileged_port_start=80
+
+[Service]
+Restart=always
 
 [Install]
 WantedBy=default.target
