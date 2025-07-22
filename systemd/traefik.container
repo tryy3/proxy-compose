@@ -6,7 +6,7 @@ After=network-online.target
 
 [Container]
 Label=app=traefik
-Image=ghcr.io/11notes/traefik:3.4.4
+Image=docker.io/traefik:3.4.4
 ContainerName=traefik
 PublishPort=80:80
 PublishPort=443:443
