@@ -7,7 +7,6 @@ http:
   routers:
     semaphore:
       entryPoints:
-        - web
         - websecure
       rule: "Host(`semaphore.tryy3.dev`)"
       service: semaphore-backend
