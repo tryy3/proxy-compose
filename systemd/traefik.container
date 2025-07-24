@@ -16,13 +16,16 @@ Volume=%h/containers/traefik/traefik.yml:/traefik/etc/traefik.yml:Z,U
 Volume=%h/containers/traefik/dynamic:/traefik/config:Z,U
 Volume=%h/dnsimple_key:/traefik/etc/dnsimple_key:Z,U
 Volume=traefik.volume:/traefik/var
+Volume=/run/user/1000/podman/podman.sock:/var/run/docker.sock
 Environment=TZ=Europe/Stockholm
 Environment=DNSIMPLE_OAUTH_TOKEN_FILE=/traefik/etc/dnsimple_key
 Exec=--configFile=/traefik/etc/traefik.yml \
 --global.checkNewVersion=false \
 --global.sendAnonymousUsage=false \
---ping.terminatingStatusCode=204
+--ping.terminatingStatusCode=204 \
+--provider.docker=true
 PodmanArgs=--sysctl net.ipv4.ip_unprivileged_port_start=80
+Network=traefik.network
 
 [Service]
 Restart=always

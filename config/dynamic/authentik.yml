@@ -1,16 +1,69 @@
-http:
-  services:
-    authentik-backend:
-      loadBalancer:
-        servers:
-          - url: "http://192.168.1.138:9000"
-  routers:
-    authentik:
-      entryPoints:
-        - websecure
-      rule: "Host(`auth.tryy3.dev`)"
-      service: authentik-backend
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: "auth.tryy3.dev"
+# http:
+#   middlewares:
+#     authentik-outpost:
+#       forwardAuth:
+#         address: "https://tower.tryy3.dev/outpost.goauthentik.io/auth/traefik"
+#         trustForwardHeader: true
+#         authResponseHeaders:
+#           - X-authentik-username
+#           - X-authentik-groups
+#           - X-authentik-entitlements
+#           - X-authentik-email
+#           - X-authentik-name
+#           - X-authentik-uid
+#           - X-authentik-jwt
+#           - X-authentik-meta-jwks
+#           - X-authentik-meta-outpost
+#           - X-authentik-meta-provider
+#           - X-authentik-meta-app
+#           - X-authentik-meta-version
+
+#     # Essential headers middleware
+#     outpost-headers:
+#       headers:
+#         customRequestHeaders:
+#           X-Forwarded-Proto: "https"
+#           X-Forwarded-Host: "tower.tryy3.dev"
+
+#     # Essential headers middleware
+#     authentik-headers:
+#       headers:
+#         customRequestHeaders:
+#           X-Forwarded-Proto: "https"
+#           X-Forwarded-Host: "auth.tryy3.dev"
+
+#   services:
+#     authentik-backend:
+#       loadBalancer:
+#         servers:
+#           - url: "http://192.168.1.138:9000"
+#         passHostHeader: true
+
+#   routers:
+#     # Main Authentik service
+#     authentik:
+#       entryPoints:
+#         - websecure
+#       rule: "Host(`auth.tryy3.dev`)"
+#       service: authentik-backend
+#       middlewares:
+#         - authentik-headers
+#       tls:
+#         certResolver: letsencrypt
+#         domains:
+#           - main: "auth.tryy3.dev"
+#       priority: 10
+    
+#     # # Outpost endpoint - critical for auth to work
+#     # outpost:
+#     #   entryPoints:
+#     #     - websecure
+#     #   rule: "Host(`auth.tryy3.dev`) && PathPrefix(`/outpost.goauthentik.io`)"
+#     #   service: authentik-backend
+#     #   middlewares:
+#     #     - authentik-headers
+#     #   tls:
+#     #     certResolver: letsencrypt
+#     #     domains:
+#     #       - main: "auth.tryy3.dev"
+#     #   priority: 15

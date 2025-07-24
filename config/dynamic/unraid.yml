@@ -1,0 +1,54 @@
+# http:
+#   services:
+#     unraid:
+#       loadBalancer:
+#         servers:
+#           - url: "http://192.168.1.138"
+#     unraid-outpost:
+#       loadBalancer:
+#         servers:
+#           - url: "http://192.168.1.138:9000/outpost.goauthentik.io"
+#         passHostHeader: true
+#   routers:
+#     unraid:
+#       entryPoints:
+#         - websecure
+#       rule: "Host(`tower.tryy3.dev`) && !PathPrefix(`/outpost.goauthentik.io`)"
+#       middlewares:
+#         - authentik-outpost
+#       service: unraid
+#       tls:
+#         certResolver: letsencrypt
+#         domains:
+#           - main: "tower.tryy3.dev"
+#       priority: 10
+#     unraid-outpost:
+#       entryPoints:
+#         - websecure
+#       rule: "Host(`tower.tryy3.dev`) && PathPrefix(`/outpost.goauthentik.io`)"
+#       service: unraid-outpost
+#       middlewares:
+#         - outpost-headers
+#       priority: 15
+#       tls:
+#         certResolver: letsencrypt
+#         domains:
+#           - main: "tower.tryy3.dev"
+http:
+  services:
+    unraid-backend:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.138"
+  routers:
+    unraid:
+      entryPoints:
+        - websecure
+      rule: "Host(`tower.tryy3.dev`)"
+      middlewares:
+        - authentik@docker
+      service: unraid-backend
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "tower.tryy3.dev"
