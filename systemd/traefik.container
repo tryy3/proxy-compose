@@ -12,6 +12,7 @@ PublishPort=80:80
 PublishPort=443:443
 PublishPort=8080:8080
 PublishPort=5432:5432
+PublishPort=222:222
 Volume=%h/containers/traefik/traefik.yml:/traefik/etc/traefik.yml:Z,U
 Volume=%h/containers/traefik/dynamic:/traefik/config:Z,U
 Volume=%h/dnsimple_key:/traefik/etc/dnsimple_key:Z,U

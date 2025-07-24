@@ -1,0 +1,33 @@
+http:
+  services:
+    gitea-backend:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.138:3111"
+  routers:
+    gitea:
+      entryPoints:
+        - websecure
+      rule: "Host(`gitea.tryy3.dev`)"
+      service: gitea-backend
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "gitea.tryy3.dev"
+
+tcp:
+  routers:
+    gitea-ssh:
+      entryPoints:
+        - gitea-ssh-entrypoint
+      rule: "HostSNI(`*`)"
+      service: gitea-ssh-backend
+
+  services:
+    gitea-ssh-backend:
+      loadBalancer:
+        servers:
+          - address: 192.168.1.138:222
+
+
+

@@ -63,6 +63,8 @@ log:
   level: DEBUG
   
 entryPoints:
+  gitea-ssh-entrypoint:
+    address: ":222"
   web:
     address: ":80"
   websecure:
@@ -87,4 +89,5 @@ providers:
   file:
     directory:
       /traefik/config
+    watch: true
   docker: {} 
